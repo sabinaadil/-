@@ -1,0 +1,27 @@
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# Деректер жиынын енгізу
+data = load_iris()
+X = data.data
+y = data.target
+
+# Деректерді оқу және тексеру жиынын бөлу
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# AdaBoost алгоритмінің жасау
+base_model = DecisionTreeClassifier(max_depth=1)  # Қолдану үшін деректер теңсіздіктерге айырмашылық жасайды
+adaboost_model = AdaBoostClassifier(base_model, n_estimators=50, random_state=42)  # 50 модельді қолданамыз
+
+# Алгоритмді оқыту
+adaboost_model.fit(X_train, y_train)
+
+# Модельді тексеру
+y_pred = adaboost_model.predict(X_test)
+
+# Дәлелдерді қолдану жүзеге асуды тексеру
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Accuracy: {accuracy}")
